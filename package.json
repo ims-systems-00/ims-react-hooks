@@ -1,5 +1,5 @@
 {
-  "name": "ims-react-hooks",
+  "name": "@ims-systems-00/ims-react-hooks",
   "version": "0.0.0",
   "source": "src/index.js",
   "main": "./dist/index.js",
@@ -32,8 +32,12 @@
   "description": "Here we have listed all our react util hooks.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ims-systems-00/ims-ui-kit.git"
+    "url": "git+https://github.com/ims-systems-00/ims-react-hooks.git"
   },
   "author": "ims-systems-00",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ims-systems-00/ims-react-hooks/issues"
+  },
+  "homepage": "https://github.com/ims-systems-00/ims-react-hooks#readme"
 }

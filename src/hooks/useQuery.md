@@ -57,7 +57,7 @@ The hook exposes folloing functions :
 You would simply
 
 ```js
-let { query, toolState, getQuery, updatePagination, ...queryHandlers } =
+let { query, toolState, getQuery, handlePagination, ...queryHandlers } =
   useQuery({
     filter: {
       //  backed api team will proide...
@@ -99,7 +99,7 @@ Above will return a query string like `role=admin&sort=username&keywords=Some am
 `handlePagination` functions does handle the pagination for you in the same manner. To use them simply
 
 ```js
-handlePagination({ page: 5, size: 30 });
+handlePagination(5, 30); // (page,size)
 ```
 
 And this will produce `role=admin&sort=username&keywords=Some amazing name&page=5&size=30`

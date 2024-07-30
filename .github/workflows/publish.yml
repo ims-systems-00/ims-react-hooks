@@ -1,0 +1,26 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [created]
+  push:
+    branches: [master] 
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+      - name: Install dependencies
+        run: npm install
+      - name: Build library
+        run: npm run build
+      - name: Publish to npm
+        run: | 
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > .npmrc
+          npm publish

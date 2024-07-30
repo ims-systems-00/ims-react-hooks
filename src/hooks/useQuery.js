@@ -93,7 +93,7 @@ function useQuery(initial) {
       return {
         ...JSON.parse(JSON.stringify(prevState)),
         required: objectToQuery(requiredQuery.value),
-        pagination: "page=1",
+        pagination: "page=1&size=10",
       };
     });
     _updateRequired(requiredQuery);
@@ -109,7 +109,7 @@ function useQuery(initial) {
       return {
         ...JSON.parse(JSON.stringify(prevState)),
         filter: objectToQuery(filterQuery.value),
-        pagination: "page=1",
+        pagination: "page=1&size=10",
       };
     });
     _updateFilter(filterQuery);
