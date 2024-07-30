@@ -1,6 +1,6 @@
 import React from "react";
 
-function useQuery(initial) {
+function useBuildQueryString(initial) {
   const initialQueryState = {
     required: _buildDefault(initial).required,
     filter: _buildDefault(initial).filter,
@@ -200,4 +200,4 @@ function useQuery(initial) {
   };
 }
 
-export default useQuery;
+export default useBuildQueryString;

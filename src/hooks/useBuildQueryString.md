@@ -1,4 +1,4 @@
-## useQuery hook
+## useBuildQueryString hook
 
 This hook is a helper hook for complex query building and handling that can be used through `url query strings` on a particular `api` endpoint. Bear in mind this hook does not directly depend on your api or does not need your `api service` for interaction as a dependency.
 
@@ -9,7 +9,7 @@ What this does is this builds you **query strings** that can be furture utilised
 To initiate the hook it takes an optional object as a parameter and the properties are `required`, `filter`, `pagination` and `search`. Example:
 
 ```js
-useQuery({
+useBuildQueryString({
   required: {},
   filter: {},
   search: {},
@@ -20,7 +20,7 @@ useQuery({
 All the supplied values are in plain js objects are then converted into query strings. Four object handles it's states in isolation. the queries have to be always in the `value` object in each properties. Example:
 
 ```js
-useQuery({
+useBuildQueryString({
   required: {
     value: { someQueryFiled: theValue, otherQueryField: theValue },
   },
@@ -58,7 +58,7 @@ You would simply
 
 ```js
 let { query, toolState, getQuery, handlePagination, ...queryHandlers } =
-  useQuery({
+  useBuildQueryString({
     filter: {
       //  backed api team will proide...
       value: {

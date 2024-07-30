@@ -1,4 +1,4 @@
-export { default as useQuery } from "./hooks/useQuery";
+export { default as useBuildQueryString } from "./hooks/useBuildQueryString";
 export { default as useForm } from "./hooks/useForm";
 export { default as useDualStateController } from "./hooks/useDualStateController";
 export { default as usePaginationState } from "./hooks/usePaginationState";
