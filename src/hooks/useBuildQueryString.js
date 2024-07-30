@@ -11,7 +11,7 @@ function useBuildQueryString(initial) {
   const initialToolState = {
     filter: (initial && initial.filter) || {},
     required: (initial && initial.required) || {},
-    search: "",
+    search: (initial && initial.search) || {},
     pagination: (initial && initial.pagination) || {
       page: 1,
       size: 10,
@@ -39,7 +39,10 @@ function useBuildQueryString(initial) {
       pagination:
         initial && initial.pagination
           ? objectToQuery(initial.pagination)
-          : "page=1&size=10",
+          : objectToQuery({
+              page: 1,
+              size: 10,
+            }),
     };
   }
 
@@ -93,7 +96,10 @@ function useBuildQueryString(initial) {
       return {
         ...JSON.parse(JSON.stringify(prevState)),
         required: objectToQuery(requiredQuery.value),
-        pagination: "page=1&size=10",
+        pagination: objectToQuery({
+          page: 1,
+          size: toolState?.pagination?.size,
+        }),
       };
     });
     _updateRequired(requiredQuery);
@@ -151,6 +157,7 @@ function useBuildQueryString(initial) {
         }),
       };
     });
+    _updateSearch(searchQuery);
     _updatePagination({ page: 1, size: toolState?.pagination?.size });
   }
   function _updatePagination(pagination) {
@@ -192,7 +199,19 @@ function useBuildQueryString(initial) {
       };
     });
   }
-  function _updateSearch() {}
+  function _updateSearch(search) {
+    setToolState((prevState) => {
+      /**
+       * I'm using JSON to avoid object mutation, this is used only for performence.
+       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+       * basic and simple objects in state.
+       */
+      return {
+        ...JSON.parse(JSON.stringify(prevState)),
+        search,
+      };
+    });
+  }
   return {
     query,
     toolState,
