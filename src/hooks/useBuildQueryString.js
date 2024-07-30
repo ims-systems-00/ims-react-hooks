@@ -19,7 +19,7 @@ function useBuildQueryString(initial) {
   };
 
   let [query, setQuery] = React.useState(initialQueryState);
-  let [toolState, setToolState] = React.useState(initialQueryState);
+  let [toolState, setToolState] = React.useState(initialToolState);
 
   function fullReset() {
     setQuery(initialQueryState);
@@ -38,7 +38,7 @@ function useBuildQueryString(initial) {
         initial && initial.search ? objectToQuery(initial.search.value) : "",
       pagination:
         initial && initial.pagination
-          ? objectToQuery(initial.pagination.value)
+          ? objectToQuery(initial.pagination)
           : "page=1&size=10",
     };
   }
@@ -142,7 +142,7 @@ function useBuildQueryString(initial) {
       return {
         ...JSON.parse(JSON.stringify(prevState)),
         search: objectToQuery(searchQuery.value),
-        pagination: "page=1",
+        pagination: "page=1&size=10",
       };
     });
     _updatePagination({ page: 1, size: 10 });
