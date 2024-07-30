@@ -45,7 +45,7 @@ The hook exposes folloing functions :
 
 - **query** this is the string that has been built.
 - **toolState** this is the raw object has been built.
-- **getQuery** gives the same string hat has been built.
+- **getQueryString** gives the same string hat has been built.
 - **handleFilter** helpful for changing and muting current filter.
 - **handlePgination** helpful for changing and muting current pagination.
 - **handleSearch** helpful for changing and muting current search.
@@ -57,7 +57,7 @@ The hook exposes folloing functions :
 You would simply
 
 ```js
-let { query, toolState, getQuery, handlePagination, ...queryHandlers } =
+let { query, toolState, getQueryString, handlePagination, ...queryHandlers } =
   useBuildQueryString({
     filter: {
       //  backed api team will proide...
@@ -104,16 +104,16 @@ handlePagination(5, 30); // (page,size)
 
 And this will produce `role=admin&sort=username&keywords=Some amazing name&page=5&size=30`
 
-Now as you can see the `query` & use `getQuery` function to use it with any your api endpoint. example
+Now as you can see the `query` & use `getQueryString` function to use it with any your api endpoint. example
 
 ```js
-http.get("https://my-awsome-api.com/some-route?" + getQuery());
+http.get("https://my-awsome-api.com/some-route?" + getQueryString());
 ```
 
 A more precise ezample:
 
 ```js
-fetch("https://my-awsome-api.com/some-route?" + getQuery(), {
+fetch("https://my-awsome-api.com/some-route?" + getQueryString(), {
   method: "GET",
 });
 ```
@@ -123,7 +123,7 @@ or
 ```js
 fetch("https://my-awsome-api.com/some-route", {
   method: "GET",
-  query: getQuery(),
+  query: getQueryString(),
 });
 ```
 

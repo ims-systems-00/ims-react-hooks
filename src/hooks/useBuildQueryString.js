@@ -109,11 +109,14 @@ function useBuildQueryString(initial) {
       return {
         ...JSON.parse(JSON.stringify(prevState)),
         filter: objectToQuery(filterQuery.value),
-        pagination: "page=1&size=10",
+        pagination: objectToQuery({
+          page: 1,
+          size: toolState?.pagination?.size,
+        }),
       };
     });
     _updateFilter(filterQuery);
-    _updatePagination({ page: 1, size: 10 });
+    _updatePagination({ page: 1, size: toolState?.pagination?.size });
   }
   function handlePagination(page = 1, size = 10) {
     setQuery((prevState) => {
@@ -142,10 +145,13 @@ function useBuildQueryString(initial) {
       return {
         ...JSON.parse(JSON.stringify(prevState)),
         search: objectToQuery(searchQuery.value),
-        pagination: "page=1&size=10",
+        pagination: objectToQuery({
+          page: 1,
+          size: toolState?.pagination?.size,
+        }),
       };
     });
-    _updatePagination({ page: 1, size: 10 });
+    _updatePagination({ page: 1, size: toolState?.pagination?.size });
   }
   function _updatePagination(pagination) {
     setToolState((prevState) => {
