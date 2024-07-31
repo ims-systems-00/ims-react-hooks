@@ -2,6 +2,10 @@
   "name": "@ims-systems-00/ims-react-hooks",
   "version": "1.0.1",
   "source": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.modern.js",
   "unpkg": "./dist/index.umd.js",
