@@ -15,12 +15,12 @@ const byString = function (object, accessString) {
   return object;
 };
 Object.byString = byString;
-const useForm = (initdataModel, schema) => {
+function useForm(initdataModel, schema) {
   const [dataModel, setDataModel] = React.useState(initdataModel);
   const [validationErrors, setValidationErrors] = React.useState({});
   const [isBusy, setIsBusy] = React.useState(false);
   const validate = async () => {
-    const options = { abortEarly: false };
+    const options = { abortEarly: false, context: schema.cast(dataModel) };
     const errors = {};
     try {
       await schema.validate(dataModel, options);
@@ -130,5 +130,5 @@ const useForm = (initdataModel, schema) => {
     resetForm,
     hasUnsavedData,
   };
-};
+}
 export default useForm;

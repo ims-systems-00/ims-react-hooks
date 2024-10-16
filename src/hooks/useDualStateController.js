@@ -1,6 +1,6 @@
 import React from "react";
 
-const useDualStateController = () => {
+function useDualStateController() {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggle = () => {
     setIsOpen((isOpen) => !isOpen);
@@ -9,6 +9,6 @@ const useDualStateController = () => {
     isOpen,
     toggle,
   };
-};
+}
 
 export default useDualStateController;

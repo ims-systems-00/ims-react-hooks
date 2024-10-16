@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 /**
  * CAUTION: Changing the object strucuture will break the UI if not handled properly.
@@ -13,7 +14,7 @@ const defaultPaginationState = {
   totalPages: 0,
   totalResults: 0,
 };
-const usePagination = () => {
+function usePagination() {
   const [pagination, setPagination] = useState(defaultPaginationState);
   function updatePaginaion(pagination = defaultPaginationState) {
     if (typeof pagination.currentPage !== "number")
@@ -38,6 +39,6 @@ const usePagination = () => {
     pagination,
     updatePaginaion,
   };
-};
+}
 
 export default usePagination;

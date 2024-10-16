@@ -1,6 +1,6 @@
 import React from "react";
 
-const useProcessing = (initializers) => {
+function useProcessing(initializers) {
   let initState = {};
   initializers.forEach((process) => {
     initState[process.action] = { status: process.status, id: null };
@@ -19,6 +19,6 @@ const useProcessing = (initializers) => {
     processing,
     dispatch,
   };
-};
+}
 
 export default useProcessing;

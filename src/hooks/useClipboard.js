@@ -1,6 +1,6 @@
 import React from "react";
 const SUCCESS_TIMEOUT = 2500;
-const useClipboard = () => {
+function useClipboard() {
   const [copySuccess, setCopySuccess] = React.useState(false);
   const contentElementReference = React.useRef(null);
   async function copyFormatedToClipboard() {
@@ -44,6 +44,6 @@ const useClipboard = () => {
     copyFormatedToClipboard,
     copyPlainTextToClipBoard,
   };
-};
+}
 
 export default useClipboard;
