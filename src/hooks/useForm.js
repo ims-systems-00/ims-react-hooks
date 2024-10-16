@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import React from "react";
+import { useState, useEffect } from "react";
 const byString = function (object, accessString) {
   accessString = accessString.replace(/\[(\w+)\]/g, ".$1");
   accessString = accessString.replace(/^\./, "");
@@ -16,9 +16,9 @@ const byString = function (object, accessString) {
 };
 Object.byString = byString;
 function useForm(initdataModel, schema) {
-  const [dataModel, setDataModel] = React.useState(initdataModel);
-  const [validationErrors, setValidationErrors] = React.useState({});
-  const [isBusy, setIsBusy] = React.useState(false);
+  const [dataModel, setDataModel] = useState(initdataModel);
+  const [validationErrors, setValidationErrors] = useState({});
+  const [isBusy, setIsBusy] = useState(false);
   const validate = async () => {
     const options = { abortEarly: false, context: schema.cast(dataModel) };
     const errors = {};
@@ -105,12 +105,12 @@ function useForm(initdataModel, schema) {
   };
   const hasUnsavedData = () => !_deepEqual(initdataModel, dataModel);
   const isFormValid = () => Object.keys(validationErrors).length === 0;
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("datamodel", dataModel);
     console.log("validation error:", validationErrors);
   }, [dataModel, validationErrors]);
   /** validation runner is required the first time the form renders. */
-  React.useEffect(() => {
+  useEffect(() => {
     // (async function () {
     //   const errors = await validate();
     //   if (errors) return setValidationErrors(errors);
