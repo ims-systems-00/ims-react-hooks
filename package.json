@@ -6,10 +6,9 @@
     "dist",
     "src"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.modern.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "type": "module",
-  "unpkg": "./dist/index.umd.js",
   "dependencies": {
     "moment": "^2.29.4",
     "react": "^18.3.1",
