@@ -1,6 +1,6 @@
 {
   "name": "@ims-systems-00/ims-react-hooks",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "source": "src/index.js",
   "files": [
     "dist",
@@ -11,8 +11,6 @@
   "type": "module",
   "dependencies": {
     "moment": "^2.29.4",
-    "react": "^18.3.1",
-    "react-dom": "18.2.0",
     "yup": "^1.3.2"
   },
   "devDependencies": {
@@ -22,6 +20,10 @@
     "microbundle": "^0.15.1",
     "rollup": "^4.24.0",
     "webpack": "^5.75.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "18.2.0"
   },
   "optionalDependencies": {
     "eslint-plugin-flowtype": "8.0.3",
