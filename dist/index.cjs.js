@@ -97,9 +97,8 @@ function useBuildQueryString(initial) {
         search: (initial && initial.search) || {},
         pagination: (_a = {},
             _a[pageKey] = initial && initial.pagination ? initial.pagination[pageKey] : 1,
-            _a[pageSizeKey] = initial && initial.pagination
-                ? initial.pagination[pageSizeKey]
-                : DEFAULT_PAGE_SIZE,
+            _a[pageSizeKey] = (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
+                DEFAULT_PAGE_SIZE,
             _a)
     };
     var _b = React.useState(initialQueryState), query = _b[0], setQuery = _b[1];
@@ -118,9 +117,8 @@ function useBuildQueryString(initial) {
             search: initial && initial.search ? objectToQuery(initial.search.value) : "",
             pagination: objectToQuery((_a = {},
                 _a[pageKey] = initial && initial.pagination ? initial.pagination[pageKey] : 1,
-                _a[pageSizeKey] = initial && initial.pagination
-                    ? initial.pagination[pageSizeKey]
-                    : DEFAULT_PAGE_SIZE,
+                _a[pageSizeKey] = (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
+                    DEFAULT_PAGE_SIZE,
                 _a))
         };
     }
