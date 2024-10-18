@@ -1,5 +1,5 @@
 import React from "react";
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 100;
 export interface InitialProps {
   required?: object;
   filter?: object;
