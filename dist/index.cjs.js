@@ -96,7 +96,7 @@ function useBuildQueryString(initial) {
         required: (initial && initial.required) || {},
         search: (initial && initial.search) || {},
         pagination: (_a = {},
-            _a[pageKey] = initial && initial.pagination ? initial.pagination[pageKey] : 1,
+            _a[pageKey] = (initial && initial.pagination && initial.pagination[pageKey]) || 1,
             _a[pageSizeKey] = (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
                 DEFAULT_PAGE_SIZE,
             _a)
@@ -116,7 +116,7 @@ function useBuildQueryString(initial) {
             filter: initial && initial.filter ? objectToQuery(initial.filter.value) : "",
             search: initial && initial.search ? objectToQuery(initial.search.value) : "",
             pagination: objectToQuery((_a = {},
-                _a[pageKey] = initial && initial.pagination ? initial.pagination[pageKey] : 1,
+                _a[pageKey] = (initial && initial.pagination && initial.pagination[pageKey]) || 1,
                 _a[pageSizeKey] = (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
                     DEFAULT_PAGE_SIZE,
                 _a))
