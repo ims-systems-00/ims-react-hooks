@@ -47,9 +47,8 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
       [pageKey]:
         initial && initial.pagination ? initial.pagination[pageKey] : 1,
       [pageSizeKey]:
-        initial && initial.pagination
-          ? initial.pagination[pageSizeKey]
-          : DEFAULT_PAGE_SIZE,
+        (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
+        DEFAULT_PAGE_SIZE,
     },
   };
 
@@ -75,9 +74,8 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
         [pageKey]:
           initial && initial.pagination ? initial.pagination[pageKey] : 1,
         [pageSizeKey]:
-          initial && initial.pagination
-            ? initial.pagination[pageSizeKey]
-            : DEFAULT_PAGE_SIZE,
+          (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
+          DEFAULT_PAGE_SIZE,
       }),
     };
   }
@@ -122,7 +120,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
   function getQueryString() {
     return getQuery();
   }
-  function handleRequired(requiredQuery) {
+  function handleRequired(requiredQuery: { value: object }) {
     setQuery((prevState) => {
       /**
        * I'm using JSON to avoid object mutation, this is used only for performence.
@@ -141,7 +139,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
     _updateRequired(requiredQuery);
     _updatePagination({ [pageKey]: 1, [pageSizeKey]: DEFAULT_PAGE_SIZE });
   }
-  function handleFilter(filterQuery) {
+  function handleFilter(filterQuery: { value: object }) {
     setQuery((prevState) => {
       /**
        * I'm using JSON to avoid object mutation, this is used only for performence.
