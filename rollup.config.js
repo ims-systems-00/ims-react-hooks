@@ -16,6 +16,10 @@ export default {
       sourcemap: true,
     },
   ],
-  plugins: [resolve(), commonjs(), typescript()],
+  plugins: [
+    resolve(),
+    commonjs(),
+    typescript(),
+  ],
   external: ["react", "react-dom"],
 };

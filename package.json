@@ -1,6 +1,6 @@
 {
   "name": "@ims-systems-00/ims-react-hooks",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "source": "src/index.js",
   "files": [
     "dist",
@@ -8,12 +8,15 @@
   ],
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
+  "types": "dist/types",
   "type": "module",
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-typescript": "^12.1.1",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
     "microbundle": "^0.15.1",
     "moment": "^2.29.4",
     "react": "^18.3.1",

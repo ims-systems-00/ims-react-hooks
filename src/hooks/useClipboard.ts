@@ -1,39 +1,40 @@
 import React from "react";
-type ClipboardRef = HTMLElement | null;
+
+type ClipboardRef = React.MutableRefObject<HTMLElement | null>;
+
 export interface ClipboardControllers {
   contentElementReference: ClipboardRef;
   copySuccess: boolean;
-  copyFormatedToClipboard: Function;
-  copyPlainTextToClipboard: Function;
+  copyFormatedToClipboard: () => void;
+  copyPlainTextToClipboard: (value: string) => void;
 }
 
 const SUCCESS_TIMEOUT = 2500;
+
 function useClipboard(): ClipboardControllers {
   const [copySuccess, setCopySuccess] = React.useState<boolean>(false);
-  const contentElementReference = React.useRef<ClipboardRef>(null);
+  const contentElementReference = React.useRef<HTMLElement | null>(null);
   async function copyFormatedToClipboard() {
-    if (contentElementReference && contentElementReference.current) {
+    if (contentElementReference.current) {
       if (navigator.clipboard) {
         try {
           await navigator.clipboard.write([
             new ClipboardItem({
               "text/html": new Blob(
                 [contentElementReference.current.innerHTML],
-                {
-                  type: "text/html",
-                }
+                { type: "text/html" }
               ),
             }),
           ]);
           setCopySuccess(true);
         } catch (err) {
-          console.log("Error copying to clipboard.");
-          console.log(err);
+          console.error("Error copying to clipboard.", err);
         }
         setTimeout(() => setCopySuccess(false), SUCCESS_TIMEOUT);
       }
     }
   }
+
   async function copyPlainTextToClipboard(value: string) {
     if (navigator.clipboard) {
       setCopySuccess(true);
