@@ -73,6 +73,7 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
+var DEFAULT_PAGE_SIZE = 10;
 function useBuildQueryString(initial) {
     var _a;
     var pageKey = "page";
@@ -94,9 +95,11 @@ function useBuildQueryString(initial) {
         filter: (initial && initial.filter) || {},
         required: (initial && initial.required) || {},
         search: (initial && initial.search) || {},
-        pagination: (initial && initial.pagination) || (_a = {},
-            _a[pageKey] = 1,
-            _a[pageSizeKey] = 10,
+        pagination: (_a = {},
+            _a[pageKey] = initial && initial.pagination ? initial.pagination[pageKey] : 1,
+            _a[pageSizeKey] = initial && initial.pagination
+                ? initial.pagination[pageSizeKey]
+                : DEFAULT_PAGE_SIZE,
             _a)
     };
     var _b = React.useState(initialQueryState), query = _b[0], setQuery = _b[1];
@@ -113,12 +116,12 @@ function useBuildQueryString(initial) {
                 : "",
             filter: initial && initial.filter ? objectToQuery(initial.filter.value) : "",
             search: initial && initial.search ? objectToQuery(initial.search.value) : "",
-            pagination: initial && initial.pagination
-                ? objectToQuery(initial.pagination)
-                : objectToQuery((_a = {},
-                    _a[pageKey] = 1,
-                    _a[pageSizeKey] = 10,
-                    _a))
+            pagination: objectToQuery((_a = {},
+                _a[pageKey] = initial && initial.pagination ? initial.pagination[pageKey] : 1,
+                _a[pageSizeKey] = initial && initial.pagination
+                    ? initial.pagination[pageSizeKey]
+                    : DEFAULT_PAGE_SIZE,
+                _a))
         };
     }
     function isObject(object) {
@@ -180,7 +183,7 @@ function useBuildQueryString(initial) {
                     _a)) });
         });
         _updateRequired(requiredQuery);
-        _updatePagination((_a = {}, _a[pageKey] = 1, _a[pageSizeKey] = 10, _a));
+        _updatePagination((_a = {}, _a[pageKey] = 1, _a[pageSizeKey] = DEFAULT_PAGE_SIZE, _a));
     }
     function handleFilter(filterQuery) {
         var _a;
@@ -205,7 +208,7 @@ function useBuildQueryString(initial) {
     function handlePagination(page, size) {
         var _a;
         if (page === void 0) { page = 1; }
-        if (size === void 0) { size = 10; }
+        if (size === void 0) { size = (toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey]) || DEFAULT_PAGE_SIZE; }
         setQuery(function (prevState) {
             var _a;
             /**
