@@ -2,229 +2,295 @@
 
 var React = require('react');
 
-function useBuildQueryString(initial) {
-  const initialQueryState = {
-    required: _buildDefault(initial).required,
-    filter: _buildDefault(initial).filter,
-    search: _buildDefault(initial).search,
-    pagination: _buildDefault(initial).pagination,
-  };
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
 
-  const initialToolState = {
-    filter: (initial && initial.filter) || {},
-    required: (initial && initial.required) || {},
-    search: (initial && initial.search) || {},
-    pagination: (initial && initial.pagination) || {
-      page: 1,
-      size: 10,
-    },
-  };
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-  let [query, setQuery] = React.useState(initialQueryState);
-  let [toolState, setToolState] = React.useState(initialToolState);
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol */
 
-  function fullReset() {
-    setQuery(initialQueryState);
-    setToolState(initialToolState);
-  }
 
-  function _buildDefault(initial) {
-    return {
-      required:
-        initial && initial.required
-          ? objectToQuery(initial.required.value)
-          : "",
-      filter:
-        initial && initial.filter ? objectToQuery(initial.filter.value) : "",
-      search:
-        initial && initial.search ? objectToQuery(initial.search.value) : "",
-      pagination:
-        initial && initial.pagination
-          ? objectToQuery(initial.pagination)
-          : objectToQuery({
-              page: 1,
-              size: 10,
-            }),
-    };
-  }
-
-  function isObject(object) {
-    return object !== null && typeof object === "object";
-  }
-  function objectToQuery(object) {
-    if (!object) return "";
-    const queryBucket = [];
-    function dig(obj, build = "") {
-      if (!isObject(obj))
-        return queryBucket.push(build + `=${encodeURIComponent(obj)}`);
-      const keys = Object.keys(obj);
-      for (let key of keys) {
-        if (isObject(obj)) {
-          let attach = !build
-            ? `${key}`
-            : !Array.isArray(obj)
-            ? `[${key}]`
-            : `[]`;
-          dig(obj[key], build + attach);
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
-      }
-      return obj;
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
-    dig(object);
-    return queryBucket.join("&");
-  }
-  let formatString = (str) => (str ? "&" + str : str);
-  // getQuery function will soon be deprecated. it's renamed to getQueryString
-  function getQuery() {
-    let processedString = "";
-    let keys = Object.keys(query);
-    for (let key of keys) {
-      processedString = processedString
-        ? processedString + formatString(query[key])
-        : query[key];
+}
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
+
+function useBuildQueryString(initial) {
+    var _a;
+    var pageKey = "page";
+    var pageSizeKey = "size";
+    if (initial && initial.pagination && isObject(initial.pagination)) {
+        var keys = Object.keys(initial.pagination);
+        if (keys[0])
+            pageKey = keys[0];
+        if (keys[1])
+            pageSizeKey = keys[1];
     }
-    return processedString;
-  }
-  function getQueryString() {
-    return getQuery();
-  }
-  function handleRequired(requiredQuery) {
-    setQuery((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        required: objectToQuery(requiredQuery.value),
-        pagination: objectToQuery({
-          page: 1,
-          size: toolState?.pagination?.size,
-        }),
-      };
-    });
-    _updateRequired(requiredQuery);
-    _updatePagination({ page: 1, size: 10 });
-  }
-  function handleFilter(filterQuery) {
-    setQuery((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        filter: objectToQuery(filterQuery.value),
-        pagination: objectToQuery({
-          page: 1,
-          size: toolState?.pagination?.size,
-        }),
-      };
-    });
-    _updateFilter(filterQuery);
-    _updatePagination({ page: 1, size: toolState?.pagination?.size });
-  }
-  function handlePagination(page = 1, size = 10) {
-    setQuery((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        pagination: objectToQuery({ page, size }),
-      };
-    });
-    _updatePagination({
-      page,
-      size,
-    });
-  }
-  function handleSearch(searchQuery) {
-    setQuery((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        search: objectToQuery(searchQuery.value),
-        pagination: objectToQuery({
-          page: 1,
-          size: toolState?.pagination?.size,
-        }),
-      };
-    });
-    _updateSearch(searchQuery);
-    _updatePagination({ page: 1, size: toolState?.pagination?.size });
-  }
-  function _updatePagination(pagination) {
-    setToolState((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        pagination,
-      };
-    });
-  }
-  function _updateFilter(filter) {
-    setToolState((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        filter,
-      };
-    });
-  }
-  function _updateRequired(required) {
-    setToolState((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        required,
-      };
-    });
-  }
-  function _updateSearch(search) {
-    setToolState((prevState) => {
-      /**
-       * I'm using JSON to avoid object mutation, this is used only for performence.
-       * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
-       * basic and simple objects in state.
-       */
-      return {
-        ...JSON.parse(JSON.stringify(prevState)),
-        search,
-      };
-    });
-  }
-  return {
-    query,
-    toolState,
-    fullReset,
-    getQuery,
-    getQueryString,
-    handleFilter,
-    handlePagination,
-    handleSearch,
-    handleRequired,
-  };
+    var initialQueryState = {
+        required: _buildDefault(initial).required,
+        filter: _buildDefault(initial).filter,
+        search: _buildDefault(initial).search,
+        pagination: _buildDefault(initial).pagination
+    };
+    var initialToolState = {
+        filter: (initial && initial.filter) || {},
+        required: (initial && initial.required) || {},
+        search: (initial && initial.search) || {},
+        pagination: (initial && initial.pagination) || (_a = {},
+            _a[pageKey] = 1,
+            _a[pageSizeKey] = 10,
+            _a)
+    };
+    var _b = React.useState(initialQueryState), query = _b[0], setQuery = _b[1];
+    var _c = React.useState(initialToolState), toolState = _c[0], setToolState = _c[1];
+    function fullReset() {
+        setQuery(initialQueryState);
+        setToolState(initialToolState);
+    }
+    function _buildDefault(initial) {
+        var _a;
+        return {
+            required: initial && initial.required
+                ? objectToQuery(initial.required.value)
+                : "",
+            filter: initial && initial.filter ? objectToQuery(initial.filter.value) : "",
+            search: initial && initial.search ? objectToQuery(initial.search.value) : "",
+            pagination: initial && initial.pagination
+                ? objectToQuery(initial.pagination)
+                : objectToQuery((_a = {},
+                    _a[pageKey] = 1,
+                    _a[pageSizeKey] = 10,
+                    _a))
+        };
+    }
+    function isObject(object) {
+        return object !== null && typeof object === "object";
+    }
+    function objectToQuery(object) {
+        if (!object)
+            return "";
+        var queryBucket = [];
+        function dig(obj, build) {
+            if (build === void 0) { build = ""; }
+            if (!isObject(obj))
+                return queryBucket.push(build + "=".concat(encodeURIComponent(obj)));
+            var keys = Object.keys(obj);
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                if (isObject(obj)) {
+                    var attach = !build
+                        ? "".concat(key)
+                        : !Array.isArray(obj)
+                            ? "[".concat(key, "]")
+                            : "[]";
+                    dig(obj[key], build + attach);
+                }
+            }
+            return obj;
+        }
+        dig(object);
+        return queryBucket.join("&");
+    }
+    var formatString = function (str) { return (str ? "&" + str : str); };
+    // getQuery function will soon be deprecated. it's renamed to getQueryString
+    function getQuery() {
+        var processedString = "";
+        var keys = Object.keys(query);
+        for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
+            var key = keys_2[_i];
+            processedString = processedString
+                ? processedString + formatString(query[key])
+                : query[key];
+        }
+        return processedString;
+    }
+    function getQueryString() {
+        return getQuery();
+    }
+    function handleRequired(requiredQuery) {
+        var _a;
+        setQuery(function (prevState) {
+            var _a;
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { required: objectToQuery(requiredQuery.value), pagination: objectToQuery((_a = {},
+                    _a[pageKey] = 1,
+                    _a[pageSizeKey] = toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey],
+                    _a)) });
+        });
+        _updateRequired(requiredQuery);
+        _updatePagination((_a = {}, _a[pageKey] = 1, _a[pageSizeKey] = 10, _a));
+    }
+    function handleFilter(filterQuery) {
+        var _a;
+        setQuery(function (prevState) {
+            var _a;
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { filter: objectToQuery(filterQuery.value), pagination: objectToQuery((_a = {},
+                    _a[pageKey] = 1,
+                    _a[pageSizeKey] = toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey],
+                    _a)) });
+        });
+        _updateFilter(filterQuery);
+        _updatePagination((_a = {},
+            _a[pageKey] = 1,
+            _a[pageSizeKey] = toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey],
+            _a));
+    }
+    function handlePagination(page, size) {
+        var _a;
+        if (page === void 0) { page = 1; }
+        if (size === void 0) { size = 10; }
+        setQuery(function (prevState) {
+            var _a;
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { pagination: objectToQuery((_a = {}, _a[pageKey] = page, _a[pageSizeKey] = size, _a)) });
+        });
+        _updatePagination((_a = {},
+            _a[pageKey] = page,
+            _a[pageSizeKey] = size,
+            _a));
+    }
+    function handleSearch(searchQuery) {
+        var _a;
+        setQuery(function (prevState) {
+            var _a;
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { search: objectToQuery(searchQuery.value), pagination: objectToQuery((_a = {},
+                    _a[pageKey] = 1,
+                    _a[pageSizeKey] = toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey],
+                    _a)) });
+        });
+        _updateSearch(searchQuery);
+        _updatePagination((_a = {},
+            _a[pageKey] = 1,
+            _a[pageSizeKey] = toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey],
+            _a));
+    }
+    function _updatePagination(pagination) {
+        setToolState(function (prevState) {
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { pagination: pagination });
+        });
+    }
+    function _updateFilter(filter) {
+        setToolState(function (prevState) {
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { filter: filter });
+        });
+    }
+    function _updateRequired(required) {
+        setToolState(function (prevState) {
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { required: required });
+        });
+    }
+    function _updateSearch(search) {
+        setToolState(function (prevState) {
+            /**
+             * I'm using JSON to avoid object mutation, this is used only for performence.
+             * Date, function, Infinity , Maps , Blobs are not cloned. So be mindfull of using,
+             * basic and simple objects in state.
+             */
+            return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { search: search });
+        });
+    }
+    return {
+        query: query,
+        toolState: toolState,
+        fullReset: fullReset,
+        getQuery: getQuery,
+        getQueryString: getQueryString,
+        handleFilter: handleFilter,
+        handlePagination: handlePagination,
+        handleSearch: handleSearch,
+        handleRequired: handleRequired
+    };
 }
 
 /**
@@ -1710,21 +1776,21 @@ class DateSchema extends Schema {
 }
 DateSchema.INVALID_DATE = invalidDate;
 
-const byString = function (object, accessString) {
-  accessString = accessString.replace(/\[(\w+)\]/g, ".$1");
-  accessString = accessString.replace(/^\./, "");
-  let accessKeys = accessString.split(".");
-  for (let i = 0, n = accessKeys.length; i < n; ++i) {
-    let key = accessKeys[i];
-    if (key in object) {
-      object = object[key];
-    } else {
-      return;
-    }
-  }
-  return object;
-};
-Object.byString = byString;
+// const byString = function (object, accessString) {
+//   accessString = accessString.replace(/\[(\w+)\]/g, ".$1");
+//   accessString = accessString.replace(/^\./, "");
+//   let accessKeys = accessString.split(".");
+//   for (let i = 0, n = accessKeys.length; i < n; ++i) {
+//     let key = accessKeys[i];
+//     if (key in object) {
+//       object = object[key];
+//     } else {
+//       return;
+//     }
+//   }
+//   return object;
+// };
+// Object.byString = byString;
 function useForm(initdataModel, schema) {
   const [dataModel, setDataModel] = React.useState(initdataModel);
   const [validationErrors, setValidationErrors] = React.useState({});
@@ -1775,7 +1841,7 @@ function useForm(initdataModel, schema) {
         try {
           await doSubmit(dataModel, e);
           if (reset) resetForm();
-          return resolve();
+          return resolve(true);
         } catch (err) {
           return reject(err);
         }
@@ -1843,123 +1909,141 @@ function useForm(initdataModel, schema) {
 }
 
 function useDualStateController() {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const toggle = () => {
-    setIsOpen((isOpen) => !isOpen);
-  };
-  return {
-    isOpen,
-    toggle,
-  };
+    var _a = React.useState(false), isOpen = _a[0], setIsOpen = _a[1];
+    var toggle = function () {
+        setIsOpen(function (isOpen) { return !isOpen; });
+    };
+    return {
+        isOpen: isOpen,
+        toggle: toggle
+    };
 }
 
 /**
  * CAUTION: Changing the object strucuture will break the UI if not handled properly.
  * Consult with seniors before making changes.
  */
-const defaultPaginationState = {
-  currentPage: 1,
-  hasNextPage: false,
-  hasPrevPage: false,
-  nextPage: null,
-  prevPage: null,
-  size: 10,
-  totalPages: 0,
-  totalResults: 0,
+var defaultPaginationState = {
+    currentPage: 1,
+    hasNextPage: false,
+    hasPrevPage: false,
+    nextPage: null,
+    prevPage: null,
+    size: 10,
+    totalPages: 0,
+    totalResults: 0
 };
 function usePagination() {
-  const [pagination, setPagination] = React.useState(defaultPaginationState);
-  function updatePaginaion(pagination = defaultPaginationState) {
-    if (typeof pagination.currentPage !== "number")
-      throw new Error("currentPage must be a number");
-    if (typeof pagination.hasNextPage !== "boolean")
-      throw new Error("currentPage must be a number");
-    if (typeof pagination.hasPrevPage !== "boolean")
-      throw new Error("hasPrevPage must be a boolean");
-    if (typeof pagination.nextPage !== "number" && pagination.nextPage !== null)
-      throw new Error("nextPage must be a number or null");
-    if (typeof pagination.prevPage !== "number" && pagination.prevPage !== null)
-      throw new Error("prevPage must be a number or null");
-    if (typeof pagination.size !== "number")
-      throw new Error("size must be a number");
-    if (typeof pagination.totalPages !== "number")
-      throw new Error("totalPages must be a number");
-    if (typeof pagination.totalResults !== "number")
-      throw new Error("totalResults must be a number");
-    setPagination(pagination);
-  }
-  return {
-    pagination,
-    updatePaginaion,
-  };
+    var _a = React.useState(defaultPaginationState), pagination = _a[0], setPagination = _a[1];
+    function updatePaginaion(pagination) {
+        if (pagination === void 0) { pagination = defaultPaginationState; }
+        if (typeof pagination.currentPage !== "number")
+            throw new Error("currentPage must be a number");
+        if (typeof pagination.hasNextPage !== "boolean")
+            throw new Error("currentPage must be a number");
+        if (typeof pagination.hasPrevPage !== "boolean")
+            throw new Error("hasPrevPage must be a boolean");
+        if (typeof pagination.nextPage !== "number" && pagination.nextPage !== null)
+            throw new Error("nextPage must be a number or null");
+        if (typeof pagination.prevPage !== "number" && pagination.prevPage !== null)
+            throw new Error("prevPage must be a number or null");
+        if (typeof pagination.size !== "number")
+            throw new Error("size must be a number");
+        if (typeof pagination.totalPages !== "number")
+            throw new Error("totalPages must be a number");
+        if (typeof pagination.totalResults !== "number")
+            throw new Error("totalResults must be a number");
+        setPagination(pagination);
+    }
+    return {
+        pagination: pagination,
+        updatePaginaion: updatePaginaion
+    };
 }
 
 function useProcessing(initializers) {
-  let initState = {};
-  initializers.forEach((process) => {
-    initState[process.action] = { status: process.status, id: null };
-  });
-  let [processing, setProcessing] = React.useState(initState);
-  let dispatch = (state) => {
-    setProcessing((currentProcesses) => {
-      let key = Object.keys(state)[0];
-      let value = Object.values(state)[0];
-      let updatedProcesses = { ...currentProcesses };
-      updatedProcesses[key] = value;
-      return updatedProcesses;
+    var initState = {};
+    initializers.forEach(function (process) {
+        initState[process.action] = { status: process.status, id: null };
     });
-  };
-  return {
-    processing,
-    dispatch,
-  };
+    var _a = React.useState(initState), processing = _a[0], setProcessing = _a[1];
+    var dispatch = function (state) {
+        setProcessing(function (currentProcesses) {
+            var key = Object.keys(state)[0];
+            var value = Object.values(state)[0];
+            var updatedProcesses = __assign({}, currentProcesses);
+            updatedProcesses[key] = value;
+            return updatedProcesses;
+        });
+    };
+    return {
+        processing: processing,
+        dispatch: dispatch
+    };
 }
 
-const SUCCESS_TIMEOUT = 2500;
+var SUCCESS_TIMEOUT = 2500;
 function useClipboard() {
-  const [copySuccess, setCopySuccess] = React.useState(false);
-  const contentElementReference = React.useRef(null);
-  async function copyFormatedToClipboard() {
-    if (contentElementReference.current) {
-      /** create a range to select contents that will be copied. */
-      // const range = document.createRange();
-      // range.selectNodeContents(contentElementReference.current);
-      /** copy the contents to clipboard. */
-      if (navigator.clipboard) {
-        try {
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              "text/html": new Blob(
-                [contentElementReference.current.innerHTML],
-                {
-                  type: "text/html",
+    var _a = React.useState(false), copySuccess = _a[0], setCopySuccess = _a[1];
+    var contentElementReference = React.useRef(null);
+    function copyFormatedToClipboard() {
+        return __awaiter(this, void 0, void 0, function () {
+            var err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(contentElementReference && contentElementReference.current)) return [3 /*break*/, 5];
+                        if (!navigator.clipboard) return [3 /*break*/, 5];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, navigator.clipboard.write([
+                                new ClipboardItem({
+                                    "text/html": new Blob([contentElementReference.current.innerHTML], {
+                                        type: "text/html"
+                                    })
+                                }),
+                            ])];
+                    case 2:
+                        _a.sent();
+                        setCopySuccess(true);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        console.log("Error copying to clipboard.");
+                        console.log(err_1);
+                        return [3 /*break*/, 4];
+                    case 4:
+                        setTimeout(function () { return setCopySuccess(false); }, SUCCESS_TIMEOUT);
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
                 }
-              ),
-            }),
-          ]);
-          setCopySuccess(true);
-          console.log("Contentns copied.");
-        } catch (err) {
-          console.log("Error copying to clipboard.");
-          console.log(err);
-        }
-        setTimeout(() => setCopySuccess(false), SUCCESS_TIMEOUT);
-      }
+            });
+        });
     }
-  }
-  async function copyPlainTextToClipBoard(value, cb = () => {}) {
-    if (navigator.clipboard) {
-      setCopySuccess(true);
-      await navigator.clipboard.writeText(value);
-      setTimeout(() => setCopySuccess(false), SUCCESS_TIMEOUT);
+    function copyPlainTextToClipboard(value) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!navigator.clipboard) return [3 /*break*/, 2];
+                        setCopySuccess(true);
+                        return [4 /*yield*/, navigator.clipboard.writeText(value)];
+                    case 1:
+                        _a.sent();
+                        setTimeout(function () { return setCopySuccess(false); }, SUCCESS_TIMEOUT);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        });
     }
-  }
-  return {
-    contentElementReference,
-    copySuccess,
-    copyFormatedToClipboard,
-    copyPlainTextToClipBoard,
-  };
+    return {
+        contentElementReference: contentElementReference,
+        copySuccess: copySuccess,
+        copyFormatedToClipboard: copyFormatedToClipboard,
+        copyPlainTextToClipboard: copyPlainTextToClipboard
+    };
 }
 
 exports.useBuildQueryString = useBuildQueryString;
