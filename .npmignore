@@ -1,0 +1,5 @@
+.git
+src
+node_modules
+*.map
+tsconfig.json
