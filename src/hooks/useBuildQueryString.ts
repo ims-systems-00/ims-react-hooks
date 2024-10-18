@@ -162,6 +162,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
     });
   }
   function handlePagination(page: number = 1, size: number) {
+    size = size || toolState?.pagination[pageSizeKey] || DEFAULT_PAGE_SIZE;
     setQuery((prevState) => {
       /**
        * I'm using JSON to avoid object mutation, this is used only for performence.
@@ -172,8 +173,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
         ...JSON.parse(JSON.stringify(prevState)),
         pagination: objectToQuery({
           [pageKey]: page,
-          [pageSizeKey]:
-            size || prevState?.pagination[pageSizeKey] || DEFAULT_PAGE_SIZE,
+          [pageSizeKey]: size,
         }),
       };
     });
