@@ -204,6 +204,7 @@ function useBuildQueryString(initial) {
     function handlePagination(page, size) {
         var _a;
         if (page === void 0) { page = 1; }
+        console.log(toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey]);
         setQuery(function (prevState) {
             var _a;
             /**

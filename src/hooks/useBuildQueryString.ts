@@ -162,6 +162,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
     });
   }
   function handlePagination(page: number = 1, size: number) {
+    console.log("pagesize",toolState?.pagination[pageSizeKey])
     setQuery((prevState) => {
       /**
        * I'm using JSON to avoid object mutation, this is used only for performence.
