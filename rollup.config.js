@@ -1,9 +1,9 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-// import typescript from "@rollup/plugin-typescript";
+import typescript from "@rollup/plugin-typescript";
 
 export default {
-  input: "src/index.js",
+  input: "src/index.ts",
   output: [
     {
       file: "dist/index.cjs.js",
@@ -16,6 +16,6 @@ export default {
       sourcemap: true,
     },
   ],
-  plugins: [resolve(), commonjs()],
+  plugins: [resolve(), commonjs(), typescript()],
   external: ["react", "react-dom"],
 };

@@ -1,6 +1,37 @@
 import React from "react";
 
-function useBuildQueryString(initial) {
+export interface InitialProps {
+  required?: object;
+  filter?: object;
+  search?: object;
+  pagination?: object;
+}
+type GetQueryFn = () => string;
+export interface QueryHandlers {
+  query;
+  toolState: {
+    required?: object;
+    filter?: object;
+    search?: object;
+    pagination?: object;
+  };
+  fullReset: Function;
+  getQuery: GetQueryFn;
+  getQueryString: GetQueryFn;
+  handleFilter: Function;
+  handlePagination: Function;
+  handleSearch: Function;
+  handleRequired: Function;
+}
+
+function useBuildQueryString(initial: InitialProps): QueryHandlers {
+  let pageKey = "page";
+  let pageSizeKey = "size";
+  if (initial && initial.pagination && isObject(initial.pagination)) {
+    let keys = Object.keys(initial.pagination);
+    if (keys[0]) pageKey = keys[0];
+    if (keys[1]) pageSizeKey = keys[1];
+  }
   const initialQueryState = {
     required: _buildDefault(initial).required,
     filter: _buildDefault(initial).filter,
@@ -13,8 +44,8 @@ function useBuildQueryString(initial) {
     required: (initial && initial.required) || {},
     search: (initial && initial.search) || {},
     pagination: (initial && initial.pagination) || {
-      page: 1,
-      size: 10,
+      [pageKey]: 1,
+      [pageSizeKey]: 10,
     },
   };
 
@@ -40,8 +71,8 @@ function useBuildQueryString(initial) {
         initial && initial.pagination
           ? objectToQuery(initial.pagination)
           : objectToQuery({
-              page: 1,
-              size: 10,
+              [pageKey]: 1,
+              [pageSizeKey]: 10,
             }),
     };
   }
@@ -51,7 +82,7 @@ function useBuildQueryString(initial) {
   }
   function objectToQuery(object) {
     if (!object) return "";
-    const queryBucket = [];
+    const queryBucket: string[] = [];
     function dig(obj, build = "") {
       if (!isObject(obj))
         return queryBucket.push(build + `=${encodeURIComponent(obj)}`);
@@ -97,13 +128,13 @@ function useBuildQueryString(initial) {
         ...JSON.parse(JSON.stringify(prevState)),
         required: objectToQuery(requiredQuery.value),
         pagination: objectToQuery({
-          page: 1,
-          size: toolState?.pagination?.size,
+          [pageKey]: 1,
+          [pageSizeKey]: toolState?.pagination[pageSizeKey],
         }),
       };
     });
     _updateRequired(requiredQuery);
-    _updatePagination({ page: 1, size: 10 });
+    _updatePagination({ [pageKey]: 1, [pageSizeKey]: 10 });
   }
   function handleFilter(filterQuery) {
     setQuery((prevState) => {
@@ -116,13 +147,16 @@ function useBuildQueryString(initial) {
         ...JSON.parse(JSON.stringify(prevState)),
         filter: objectToQuery(filterQuery.value),
         pagination: objectToQuery({
-          page: 1,
-          size: toolState?.pagination?.size,
+          [pageKey]: 1,
+          [pageSizeKey]: toolState?.pagination[pageSizeKey],
         }),
       };
     });
     _updateFilter(filterQuery);
-    _updatePagination({ page: 1, size: toolState?.pagination?.size });
+    _updatePagination({
+      [pageKey]: 1,
+      [pageSizeKey]: toolState?.pagination[pageSizeKey],
+    });
   }
   function handlePagination(page = 1, size = 10) {
     setQuery((prevState) => {
@@ -133,12 +167,12 @@ function useBuildQueryString(initial) {
        */
       return {
         ...JSON.parse(JSON.stringify(prevState)),
-        pagination: objectToQuery({ page, size }),
+        pagination: objectToQuery({ [pageKey]: page, [pageSizeKey]: size }),
       };
     });
     _updatePagination({
-      page,
-      size,
+      [pageKey]: page,
+      [pageSizeKey]: size,
     });
   }
   function handleSearch(searchQuery) {
@@ -152,13 +186,16 @@ function useBuildQueryString(initial) {
         ...JSON.parse(JSON.stringify(prevState)),
         search: objectToQuery(searchQuery.value),
         pagination: objectToQuery({
-          page: 1,
-          size: toolState?.pagination?.size,
+          [pageKey]: 1,
+          [pageSizeKey]: toolState?.pagination[pageSizeKey],
         }),
       };
     });
     _updateSearch(searchQuery);
-    _updatePagination({ page: 1, size: toolState?.pagination?.size });
+    _updatePagination({
+      [pageKey]: 1,
+      [pageSizeKey]: toolState?.pagination[pageSizeKey],
+    });
   }
   function _updatePagination(pagination) {
     setToolState((prevState) => {
