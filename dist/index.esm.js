@@ -71,7 +71,7 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
-var DEFAULT_PAGE_SIZE = 10;
+var DEFAULT_PAGE_SIZE = 100;
 function useBuildQueryString(initial) {
     var _a;
     var pageKey = "page";
@@ -204,6 +204,7 @@ function useBuildQueryString(initial) {
     function handlePagination(page, size) {
         var _a;
         if (page === void 0) { page = 1; }
+        size = size || (toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey]) || DEFAULT_PAGE_SIZE;
         setQuery(function (prevState) {
             var _a;
             /**
@@ -213,12 +214,12 @@ function useBuildQueryString(initial) {
              */
             return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { pagination: objectToQuery((_a = {},
                     _a[pageKey] = page,
-                    _a[pageSizeKey] = 67,
+                    _a[pageSizeKey] = size,
                     _a)) });
         });
         _updatePagination((_a = {},
             _a[pageKey] = page,
-            _a[pageSizeKey] = 67,
+            _a[pageSizeKey] = size,
             _a));
     }
     function handleSearch(searchQuery) {
