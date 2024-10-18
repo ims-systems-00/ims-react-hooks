@@ -1,14 +1,18 @@
 import React from "react";
+type ClipboardRef = HTMLElement | null;
+export interface ClipboardControllers {
+  contentElementReference: ClipboardRef;
+  copySuccess: boolean;
+  copyFormatedToClipboard: Function;
+  copyPlainTextToClipboard: Function;
+}
+
 const SUCCESS_TIMEOUT = 2500;
-function useClipboard() {
-  const [copySuccess, setCopySuccess] = React.useState(false);
-  const contentElementReference = React.useRef(null);
+function useClipboard(): ClipboardControllers {
+  const [copySuccess, setCopySuccess] = React.useState<boolean>(false);
+  const contentElementReference = React.useRef<ClipboardRef>(null);
   async function copyFormatedToClipboard() {
-    if (contentElementReference.current) {
-      /** create a range to select contents that will be copied. */
-      // const range = document.createRange();
-      // range.selectNodeContents(contentElementReference.current);
-      /** copy the contents to clipboard. */
+    if (contentElementReference && contentElementReference.current) {
       if (navigator.clipboard) {
         try {
           await navigator.clipboard.write([
@@ -22,7 +26,6 @@ function useClipboard() {
             }),
           ]);
           setCopySuccess(true);
-          console.log("Contentns copied.");
         } catch (err) {
           console.log("Error copying to clipboard.");
           console.log(err);
@@ -31,7 +34,7 @@ function useClipboard() {
       }
     }
   }
-  async function copyPlainTextToClipBoard(value, cb = () => {}) {
+  async function copyPlainTextToClipboard(value: string) {
     if (navigator.clipboard) {
       setCopySuccess(true);
       await navigator.clipboard.writeText(value);
@@ -42,7 +45,7 @@ function useClipboard() {
     contentElementReference,
     copySuccess,
     copyFormatedToClipboard,
-    copyPlainTextToClipBoard,
+    copyPlainTextToClipboard,
   };
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@ims-systems-00/ims-react-hooks",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "source": "src/index.js",
   "files": [
     "dist",

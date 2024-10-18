@@ -1,20 +1,20 @@
 import * as yup from "yup";
 import { useState, useEffect } from "react";
-const byString = function (object, accessString) {
-  accessString = accessString.replace(/\[(\w+)\]/g, ".$1");
-  accessString = accessString.replace(/^\./, "");
-  let accessKeys = accessString.split(".");
-  for (let i = 0, n = accessKeys.length; i < n; ++i) {
-    let key = accessKeys[i];
-    if (key in object) {
-      object = object[key];
-    } else {
-      return;
-    }
-  }
-  return object;
-};
-Object.byString = byString;
+// const byString = function (object, accessString) {
+//   accessString = accessString.replace(/\[(\w+)\]/g, ".$1");
+//   accessString = accessString.replace(/^\./, "");
+//   let accessKeys = accessString.split(".");
+//   for (let i = 0, n = accessKeys.length; i < n; ++i) {
+//     let key = accessKeys[i];
+//     if (key in object) {
+//       object = object[key];
+//     } else {
+//       return;
+//     }
+//   }
+//   return object;
+// };
+// Object.byString = byString;
 function useForm(initdataModel, schema) {
   const [dataModel, setDataModel] = useState(initdataModel);
   const [validationErrors, setValidationErrors] = useState({});
@@ -65,7 +65,7 @@ function useForm(initdataModel, schema) {
         try {
           await doSubmit(dataModel, e);
           if (reset) resetForm();
-          return resolve();
+          return resolve(true);
         } catch (err) {
           return reject(err);
         }
