@@ -45,7 +45,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
     search: (initial && initial.search) || {},
     pagination: {
       [pageKey]:
-        initial && initial.pagination ? initial.pagination[pageKey] : 1,
+        (initial && initial.pagination && initial.pagination[pageKey]) || 1,
       [pageSizeKey]:
         (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
         DEFAULT_PAGE_SIZE,
@@ -72,7 +72,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
         initial && initial.search ? objectToQuery(initial.search.value) : "",
       pagination: objectToQuery({
         [pageKey]:
-          initial && initial.pagination ? initial.pagination[pageKey] : 1,
+          (initial && initial.pagination && initial.pagination[pageKey]) || 1,
         [pageSizeKey]:
           (initial && initial.pagination && initial.pagination[pageSizeKey]) ||
           DEFAULT_PAGE_SIZE,
