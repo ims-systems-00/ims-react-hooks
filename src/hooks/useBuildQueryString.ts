@@ -1,5 +1,5 @@
 import React from "react";
-
+const DEFAULT_PAGE_SIZE = 10;
 export interface InitialProps {
   required?: object;
   filter?: object;
@@ -8,7 +8,7 @@ export interface InitialProps {
 }
 type GetQueryFn = () => string;
 export interface QueryHandlers {
-  query;
+  query: object;
   toolState: {
     required?: object;
     filter?: object;
@@ -43,9 +43,13 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
     filter: (initial && initial.filter) || {},
     required: (initial && initial.required) || {},
     search: (initial && initial.search) || {},
-    pagination: (initial && initial.pagination) || {
-      [pageKey]: 1,
-      [pageSizeKey]: 10,
+    pagination: {
+      [pageKey]:
+        initial && initial.pagination ? initial.pagination[pageKey] : 1,
+      [pageSizeKey]:
+        initial && initial.pagination
+          ? initial.pagination[pageSizeKey]
+          : DEFAULT_PAGE_SIZE,
     },
   };
 
@@ -67,13 +71,14 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
         initial && initial.filter ? objectToQuery(initial.filter.value) : "",
       search:
         initial && initial.search ? objectToQuery(initial.search.value) : "",
-      pagination:
-        initial && initial.pagination
-          ? objectToQuery(initial.pagination)
-          : objectToQuery({
-              [pageKey]: 1,
-              [pageSizeKey]: 10,
-            }),
+      pagination: objectToQuery({
+        [pageKey]:
+          initial && initial.pagination ? initial.pagination[pageKey] : 1,
+        [pageSizeKey]:
+          initial && initial.pagination
+            ? initial.pagination[pageSizeKey]
+            : DEFAULT_PAGE_SIZE,
+      }),
     };
   }
 
@@ -134,7 +139,7 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
       };
     });
     _updateRequired(requiredQuery);
-    _updatePagination({ [pageKey]: 1, [pageSizeKey]: 10 });
+    _updatePagination({ [pageKey]: 1, [pageSizeKey]: DEFAULT_PAGE_SIZE });
   }
   function handleFilter(filterQuery) {
     setQuery((prevState) => {
@@ -158,7 +163,10 @@ function useBuildQueryString(initial: InitialProps): QueryHandlers {
       [pageSizeKey]: toolState?.pagination[pageSizeKey],
     });
   }
-  function handlePagination(page = 1, size = 10) {
+  function handlePagination(
+    page = 1,
+    size = toolState?.pagination[pageSizeKey] || DEFAULT_PAGE_SIZE
+  ) {
     setQuery((prevState) => {
       /**
        * I'm using JSON to avoid object mutation, this is used only for performence.
