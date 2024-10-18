@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as yup from "yup";
 import { useState, useEffect } from "react";
 // const byString = function (object, accessString) {
@@ -36,6 +37,7 @@ function useForm(initdataModel, schema) {
     const errors = { ...validationErrors };
     try {
       const objSchema = yup.reach(schema, field);
+      // @ts-ignore
       await objSchema.validate(value);
       /**
        * if reached this block after promise it means validation success.
