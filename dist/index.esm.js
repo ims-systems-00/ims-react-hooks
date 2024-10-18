@@ -204,6 +204,7 @@ function useBuildQueryString(initial) {
     function handlePagination(page, size) {
         var _a;
         if (page === void 0) { page = 1; }
+        size = size || (toolState === null || toolState === void 0 ? void 0 : toolState.pagination[pageSizeKey]) || DEFAULT_PAGE_SIZE;
         setQuery(function (prevState) {
             var _a;
             /**
@@ -213,7 +214,7 @@ function useBuildQueryString(initial) {
              */
             return __assign(__assign({}, JSON.parse(JSON.stringify(prevState))), { pagination: objectToQuery((_a = {},
                     _a[pageKey] = page,
-                    _a[pageSizeKey] = size || (prevState === null || prevState === void 0 ? void 0 : prevState.pagination[pageSizeKey]) || DEFAULT_PAGE_SIZE,
+                    _a[pageSizeKey] = size,
                     _a)) });
         });
         _updatePagination((_a = {},
