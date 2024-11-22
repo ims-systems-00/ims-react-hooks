@@ -13,7 +13,9 @@ export interface QueryHandlers {
         required?: object;
         filter?: object;
         search?: object;
-        pagination?: object;
+        pagination?: {
+            [key: string]: any;
+        };
     };
     fullReset: Function;
     getQuery: GetQueryFn;
