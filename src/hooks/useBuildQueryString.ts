@@ -1,9 +1,15 @@
 import React from "react";
 const DEFAULT_PAGE_SIZE = 100;
 export interface InitialProps {
-  required?: object;
-  filter?: object;
-  search?: object;
+  required?: {
+    [key: string]: any;
+  };
+  filter?: {
+    [key: string]: any;
+  };
+  search?: {
+    [key: string]: any;
+  };
   pagination?: {
     [key: string]: any;
   };
@@ -12,9 +18,15 @@ type GetQueryFn = () => string;
 export interface QueryHandlers {
   query: object;
   toolState: {
-    required?: object;
-    filter?: object;
-    search?: object;
+    required?: {
+      [key: string]: any;
+    };
+    filter?: {
+      [key: string]: any;
+    };
+    search?: {
+      [key: string]: any;
+    };
     pagination?: {
       [key: string]: any;
     };
