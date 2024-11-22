@@ -2,7 +2,9 @@ export interface InitialProps {
     required?: object;
     filter?: object;
     search?: object;
-    pagination?: object;
+    pagination?: {
+        [key: string]: any;
+    };
 }
 type GetQueryFn = () => string;
 export interface QueryHandlers {
