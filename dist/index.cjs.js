@@ -2111,10 +2111,175 @@ function useForm(initdataModel, schema) {
     };
 }
 
+/**
+ * Resizes an image based on provided options
+ * @param dataUrl The data URL of the image
+ * @param options Resize options including minWidth, minHeight, quality, and format
+ * @returns A Promise that resolves to the resized image data URL
+ */
+var resizeImage = function (_a) {
+    var dataUrl = _a.dataUrl, options = _a.options;
+    return __awaiter(void 0, void 0, void 0, function () {
+        var _b, minWidth, _c, minHeight, _d, quality, format;
+        return __generator(this, function (_e) {
+            _b = options.minWidth, minWidth = _b === void 0 ? 100 : _b, _c = options.minHeight, minHeight = _c === void 0 ? 100 : _c, _d = options.quality, quality = _d === void 0 ? 0.92 : _d, format = options.format;
+            return [2 /*return*/, new Promise(function (resolve) {
+                    var img = new Image();
+                    img.onload = function () {
+                        // If the image is already larger than the minimum dimensions, return the original
+                        if (img.width >= minWidth && img.height >= minHeight) {
+                            resolve(dataUrl);
+                            return;
+                        }
+                        var originalImageWidth = img.width;
+                        var originalImageHeight = img.height;
+                        // Calculate new dimensions
+                        var canvasArm = Math.max(minWidth, minHeight) + 100;
+                        // Create a canvas to draw the resized image
+                        var canvas = document.createElement("canvas");
+                        canvas.width = canvasArm;
+                        canvas.height = canvasArm;
+                        var ctx = canvas.getContext("2d");
+                        if (!ctx) {
+                            resolve(dataUrl); // Fallback to original if context cannot be created
+                            return;
+                        }
+                        // Use better quality settings for the resize
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = "high";
+                        var xImageTopLeftCorner = canvas.width / 2 - originalImageWidth / 2;
+                        var yImageTopLeftCorner = canvas.height / 2 - originalImageHeight / 2;
+                        // Draw the image at the new size
+                        ctx.drawImage(img, xImageTopLeftCorner, yImageTopLeftCorner, originalImageWidth, originalImageHeight);
+                        // Get the MIME type from format or extract from dataUrl
+                        var mimeType = format ||
+                            dataUrl.substring(dataUrl.indexOf(":") + 1, dataUrl.indexOf(";"));
+                        // Get the new data URL
+                        var resizedDataUrl = canvas.toDataURL(mimeType, quality);
+                        resolve(resizedDataUrl);
+                    };
+                    img.onerror = function () {
+                        resolve(dataUrl); // Return original on error
+                    };
+                    img.src = dataUrl;
+                })];
+        });
+    });
+};
+
+function useImageResize() {
+    var _this = this;
+    var _a = React.useState(false), isResizing = _a[0], setIsResizing = _a[1];
+    var _b = React.useState(null), lastResult = _b[0], setLastResult = _b[1];
+    var validateImage = function (file) {
+        // Check if file is an image
+        if (!file.type.startsWith('image/')) {
+            return 'File is not an image';
+        }
+        // Check file size (10MB limit)
+        var MAX_SIZE = 10 * 1024 * 1024; // 10MB
+        if (file.size > MAX_SIZE) {
+            return 'Image is too large (max 10MB)';
+        }
+        return null;
+    };
+    var readFileAsDataUrl = function (file) {
+        return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () { return resolve(reader.result); };
+            reader.onerror = function () { return reject(new Error('Failed to read file')); };
+            reader.readAsDataURL(file);
+        });
+    };
+    var resizeImageFile = React.useCallback(function (file, options) {
+        if (options === void 0) { options = {}; }
+        return __awaiter(_this, void 0, void 0, function () {
+            var validationError, format, dataUrl, resizedDataUrl, isResized, resizedBlob, resizedFile, result, result, err_1, errorMessage, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        setIsResizing(true);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 7, 8, 9]);
+                        validationError = validateImage(file);
+                        if (validationError) {
+                            return [2 /*return*/, {
+                                    file: null,
+                                    dataUrl: null,
+                                    originalFile: file,
+                                    isResized: false,
+                                    error: validationError
+                                }];
+                        }
+                        format = options.format;
+                        return [4 /*yield*/, readFileAsDataUrl(file)];
+                    case 2:
+                        dataUrl = _a.sent();
+                        return [4 /*yield*/, resizeImage({ dataUrl: dataUrl, options: options })];
+                    case 3:
+                        resizedDataUrl = _a.sent();
+                        isResized = resizedDataUrl !== dataUrl;
+                        if (!isResized) return [3 /*break*/, 5];
+                        return [4 /*yield*/, fetch(resizedDataUrl).then(function (r) { return r.blob(); })];
+                    case 4:
+                        resizedBlob = _a.sent();
+                        resizedFile = new File([resizedBlob], file.name, {
+                            type: format || file.type,
+                            lastModified: file.lastModified
+                        });
+                        result = {
+                            file: resizedFile,
+                            dataUrl: resizedDataUrl,
+                            originalFile: file,
+                            isResized: true,
+                            error: null
+                        };
+                        setLastResult(result);
+                        return [2 /*return*/, result];
+                    case 5:
+                        result = {
+                            file: file,
+                            dataUrl: dataUrl,
+                            originalFile: file,
+                            isResized: false,
+                            error: null
+                        };
+                        setLastResult(result);
+                        return [2 /*return*/, result];
+                    case 6: return [3 /*break*/, 9];
+                    case 7:
+                        err_1 = _a.sent();
+                        errorMessage = err_1 instanceof Error ? err_1.message : 'Unknown error during image resize';
+                        result = {
+                            file: null,
+                            dataUrl: null,
+                            originalFile: file,
+                            isResized: false,
+                            error: errorMessage
+                        };
+                        setLastResult(result);
+                        return [2 /*return*/, result];
+                    case 8:
+                        setIsResizing(false);
+                        return [7 /*endfinally*/];
+                    case 9: return [2 /*return*/];
+                }
+            });
+        });
+    }, []);
+    return {
+        resizeImageFile: resizeImageFile,
+        isResizing: isResizing,
+        lastResult: lastResult
+    };
+}
+
 exports.useBuildQueryString = useBuildQueryString;
 exports.useClipboard = useClipboard;
 exports.useDualStateController = useDualStateController;
 exports.useForm = useForm;
+exports.useImageResize = useImageResize;
 exports.usePaginationState = usePagination;
 exports.useProcessing = useProcessing;
 //# sourceMappingURL=index.cjs.js.map
